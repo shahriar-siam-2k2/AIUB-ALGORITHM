@@ -49,6 +49,18 @@ int main() {
     cout << endl << "Enter the size of the array: ";
     cin >> n;
 
+    if(n <= 0) {
+        cout << endl << "Size should be greater than or equal 1.";
+        
+        cout << endl << endl << "Press any key to close...";
+
+        getch();
+
+        cout << endl;
+
+        return 0;
+    }
+
     int *arr = new int[n];
     int firstIndex = 0, lastIndex = n-1;
 
