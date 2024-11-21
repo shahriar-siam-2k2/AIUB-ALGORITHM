@@ -12,22 +12,22 @@ void SwapVal(int *a, int *b) {
 
 int Partition(int arr[], int firstIndex, int lastIndex) {
 
-    int pivotVal = arr[lastIndex], pivotIndex = firstIndex;
+    int pivotVal = arr[lastIndex], partitionSize = firstIndex;
 
     for(int j=firstIndex; j<lastIndex; j++) {
 
         if(arr[j] <= pivotVal) {
 
-            SwapVal(&arr[pivotIndex], &arr[j]);
-            pivotIndex++;
+            SwapVal(&arr[partitionSize], &arr[j]);
+            partitionSize++;
 
         }
 
     }
 
-    SwapVal(&arr[pivotIndex], &arr[lastIndex]);
+    SwapVal(&arr[partitionSize], &arr[lastIndex]);
 
-    return pivotIndex;
+    return partitionSize;
 
 }
 
@@ -37,9 +37,9 @@ void QuickSort(int arr[], int firstIndex, int lastIndex) {
         return;
     }
 
-    int pivotIndex = Partition(arr, firstIndex, lastIndex);
-    QuickSort(arr, firstIndex, pivotIndex-1);
-    QuickSort(arr, pivotIndex+1, lastIndex);
+    int partitionSize = Partition(arr, firstIndex, lastIndex);
+    QuickSort(arr, firstIndex, partitionSize-1);
+    QuickSort(arr, partitionSize+1, lastIndex);
 
 }
 
