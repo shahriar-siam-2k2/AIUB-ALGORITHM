@@ -13,8 +13,9 @@ struct Grocery {
 void minimizeNotes(int amount) {
     int notes[] = {1000, 500, 200, 100, 50, 20, 10, 5, 2, 1};
     int count[10] = {0};
+    int noteCount = 0;
 
-    cout << "Minimum amount to pay: " << amount << " Tk" << endl;
+    cout << endl << "Minimum amount to pay: " << amount << " Tk" << endl;
 
     for(int i = 0; i < 10; i++) {
 
@@ -24,10 +25,12 @@ void minimizeNotes(int amount) {
         }
 
         if(count[i] > 0) {
-            cout << notes[i] << " Tk: " << count[i] << endl;
+            cout << notes[i] << " Tk: " << count[i] << " note(s)" << endl;
         }
 
     }
+
+    
 }
 
 int selectItems(Grocery groceries[], int n, int capacity, int &totalCost) {
@@ -36,13 +39,14 @@ int selectItems(Grocery groceries[], int n, int capacity, int &totalCost) {
 
     cout << "Selected items to maximize bag capacity:" << endl;
 
-    for(int i = 0; i < n; ++i) {
+    for(int i = 0; i < n; i++) {
 
         if( (currentWeight + groceries[i].weight) <= capacity) {
 
             currentWeight += groceries[i].weight;
             totalCost += groceries[i].price;
-            cout << "- " << groceries[i].item << " (" << groceries[i].weight << "kg, " << groceries[i].price << " taka)" << endl;
+
+            cout << i+1 << ". " << groceries[i].item << " (" << groceries[i].weight << "kg, " << groceries[i].price << " taka)" << endl;
 
         }
         
@@ -52,6 +56,8 @@ int selectItems(Grocery groceries[], int n, int capacity, int &totalCost) {
 }
 
 int main() {
+    cout << endl;
+
     const int capacity = 10;
 
     Grocery groceries[] = {
@@ -65,7 +71,7 @@ int main() {
     int totalCost = 0;
     int totalWeight = selectItems(groceries, n, capacity, totalCost);
 
-    cout << "Total weight: " << totalWeight << "kg" << endl;
+    cout << endl << "Total weight: " << totalWeight << " kg" << endl;
     cout << "Total cost: " << totalCost << " taka" << endl;
 
     minimizeNotes(totalCost);
