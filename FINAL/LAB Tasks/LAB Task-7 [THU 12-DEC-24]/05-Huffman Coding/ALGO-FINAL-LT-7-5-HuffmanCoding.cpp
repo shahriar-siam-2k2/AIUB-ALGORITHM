@@ -1,56 +1,63 @@
 //ALGO-FINAL-LT-7-5-HuffmanCoding
 
 #include <iostream>
-
 using namespace std;
 
 struct Node {
-    char ch;
     int freq;
     Node* left;
     Node* right;
 
-    Node(char c, int f) {
-        ch = c;
+    Node(int f) {
         freq = f;
         left = nullptr;
         right = nullptr;
     }
 };
 
-void printCodes(Node* root, string code) {
+void SwapVal(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void PrintCodes(Node* root, string code) {
     if (!root) {
         return;
     }
 
     if (!root->left && !root->right) {
-        cout << root->ch << ": " << code << endl;
+        cout << endl << "Leaf Node - Frequency: " << root->freq << ", Code: " << code << endl;
     }
 
-    printCodes(root->left, code + "0");
-    printCodes(root->right, code + "1");
+    PrintCodes(root->left, code + "0");
+    PrintCodes(root->right, code + "1");
 }
 
-Node* createNode(char ch, int freq, Node* left = nullptr, Node* right = nullptr) {
-    Node* newNode = new Node(ch, freq);
+Node* CreateNode(int freq, Node* left = nullptr, Node* right = nullptr) {
+    cout << endl << "Creating Node - Frequency: " << freq << endl;
+    Node* newNode = new Node(freq);
     newNode->left = left;
     newNode->right = right;
     return newNode;
 }
 
-Node* buildHuffmanTree(char chars[], int freqs[], int n) {
+Node* CreateHuffmanTree(int freqs[], int n) {
     Node* nodes[100];
     int size = 0;
 
     for (int i = 0; i < n; i++) {
-        nodes[size++] = createNode(chars[i], freqs[i]);
+        cout << endl << "Inserting into nodes array - Frequency: " << freqs[i] << endl;
+        nodes[size++] = CreateNode(freqs[i]);
     }
 
     while (size > 1) {
         int min1 = 0, min2 = 1;
+
         if (nodes[min1]->freq > nodes[min2]->freq) {
-            swap(min1, min2);
+            SwapVal(&min1, &min2);
         }
+        
         for (int i = 2; i < size; i++) {
             if (nodes[i]->freq < nodes[min1]->freq) {
                 min2 = min1;
@@ -60,9 +67,12 @@ Node* buildHuffmanTree(char chars[], int freqs[], int n) {
             }
         }
 
+        cout << endl << "Merging nodes - Left Frequency: " << nodes[min1]->freq;
+        cout << endl << ", Right Frequency: " << nodes[min2]->freq << endl;
+
         Node* left = nodes[min1];
         Node* right = nodes[min2];
-        Node* newNode = createNode('~', left->freq + right->freq, left, right);
+        Node* newNode = CreateNode(left->freq + right->freq, left, right);
 
         nodes[min1] = newNode;
         nodes[min2] = nodes[--size];
@@ -73,24 +83,22 @@ Node* buildHuffmanTree(char chars[], int freqs[], int n) {
 
 int main() {
     int n;
-    cout << "Enter the number of characters: ";
+    cout << endl << "Enter the number of frequencies: ";
     cin >> n;
 
-    char chars[n];
     int freqs[n];
 
-    cout << "Enter the characters and their frequencies:\n";
+    cout << endl << "Enter the frequencies:" << endl;
     for (int i = 0; i < n; i++) {
-        cout << "Character " << i + 1 << ": ";
-        cin >> chars[i];
-        cout << "Frequency of " << chars[i] << ": ";
+        cout << "Frequency " << i + 1 << ": ";
         cin >> freqs[i];
     }
 
-    Node* root = buildHuffmanTree(chars, freqs, n);
+    cout << endl << "Creating Huffman Tree:" << endl;
+    Node* root = CreateHuffmanTree(freqs, n);
 
-    cout << "Huffman Codes:\n";
-    printCodes(root, "");
+    cout << endl << "Huffman Codes:" << endl;
+    PrintCodes(root, "");
 
     return 0;
 }
