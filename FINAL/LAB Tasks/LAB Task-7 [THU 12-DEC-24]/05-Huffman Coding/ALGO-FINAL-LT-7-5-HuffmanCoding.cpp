@@ -1,14 +1,20 @@
 //ALGO-FINAL-LT-7-5-HuffmanCoding
 
 #include <iostream>
+#include <conio.h>
 using namespace std;
 
+int alphabetC = 26;
+int freqC = 26;
+
 struct Node {
+    char ch;
     int freq;
     Node* left;
     Node* right;
 
-    Node(int f) {
+    Node(char c, int f) {
+        ch = c;
         freq = f;
         left = nullptr;
         right = nullptr;
@@ -22,33 +28,38 @@ void SwapVal(int *a, int *b) {
 }
 
 void PrintCodes(Node* root, string code) {
-    if (!root) {
+    if (root == nullptr) {
         return;
     }
 
-    if (!root->left && !root->right) {
-        cout << endl << "Leaf Node - Frequency: " << root->freq << ", Code: " << code << endl;
+    if (root->left == nullptr && root->right == nullptr) {
+        cout << root->ch << ": ";
+
+        if (code == "") {
+            cout << "(no code required)" << endl;
+        }
+        else {
+            cout << code << endl;
+        }
     }
 
     PrintCodes(root->left, code + "0");
     PrintCodes(root->right, code + "1");
 }
 
-Node* CreateNode(int freq, Node* left = nullptr, Node* right = nullptr) {
-    cout << endl << "Creating Node - Frequency: " << freq << endl;
-    Node* newNode = new Node(freq);
+Node* CreateNode(char ch, int freq, Node* left = nullptr, Node* right = nullptr) {
+    Node* newNode = new Node(ch, freq);
     newNode->left = left;
     newNode->right = right;
     return newNode;
 }
 
-Node* CreateHuffmanTree(int freqs[], int n) {
+Node* CreateHuffmanTree(char chars[], int freqs[], int uniqueC )  {
     Node* nodes[100];
     int size = 0;
 
-    for (int i = 0; i < n; i++) {
-        cout << endl << "Inserting into nodes array - Frequency: " << freqs[i] << endl;
-        nodes[size++] = CreateNode(freqs[i]);
+    for (int i = 0; i < uniqueC ;  i++) {
+        nodes[size++] = CreateNode(chars[i], freqs[i]);
     }
 
     while (size > 1) {
@@ -62,17 +73,15 @@ Node* CreateHuffmanTree(int freqs[], int n) {
             if (nodes[i]->freq < nodes[min1]->freq) {
                 min2 = min1;
                 min1 = i;
-            } else if (nodes[i]->freq < nodes[min2]->freq) {
+            }
+            else if (nodes[i]->freq < nodes[min2]->freq) {
                 min2 = i;
             }
         }
 
-        cout << endl << "Merging nodes - Left Frequency: " << nodes[min1]->freq;
-        cout << endl << ", Right Frequency: " << nodes[min2]->freq << endl;
-
         Node* left = nodes[min1];
         Node* right = nodes[min2];
-        Node* newNode = CreateNode(left->freq + right->freq, left, right);
+        Node* newNode = CreateNode('~', left->freq + right->freq, left, right);
 
         nodes[min1] = newNode;
         nodes[min2] = nodes[--size];
@@ -81,24 +90,50 @@ Node* CreateHuffmanTree(int freqs[], int n) {
     return nodes[0];
 }
 
-int main() {
-    int n;
-    cout << endl << "Enter the number of frequencies: ";
-    cin >> n;
+void CountFrequency(const string& str, char chars[], int freqs[], int& uniqueC )  {
+    int *freqArray = new int[freqC] {0};
 
-    int freqs[n];
-
-    cout << endl << "Enter the frequencies:" << endl;
-    for (int i = 0; i < n; i++) {
-        cout << "Frequency " << i + 1 << ": ";
-        cin >> freqs[i];
+    for (int i = 0; i < str.length(); i++) {
+        char ch = str[i];
+        if (ch >= 'a' && ch <= 'z') {
+            freqArray[ch - 'a']++;
+        }
     }
 
-    cout << endl << "Creating Huffman Tree:" << endl;
-    Node* root = CreateHuffmanTree(freqs, n);
+    for (int i = 0; i < alphabetC; i++) {
+        if (freqArray[i] > 0) {
+            chars[uniqueC ]  = (char)(i + 'a');
+            freqs[uniqueC ]  = freqArray[i];
+            uniqueC++;
+        }
+    }
 
-    cout << endl << "Huffman Codes:" << endl;
+    delete[] freqArray;
+}
+
+int main() {
+    string input;
+    cout << endl << "Enter the string: ";
+    cin >> input;
+
+    char *chars = new char[alphabetC];
+    int *freqs = new int[freqC];
+    int uniqueC = 0;
+
+    CountFrequency(input, chars, freqs, uniqueC) ;
+
+    Node* root = CreateHuffmanTree(chars, freqs, uniqueC) ;
+
+    cout << endl << "Huffman Codes-" << endl;
     PrintCodes(root, "");
+
+    delete[] chars;
+    delete[] freqs;
+
+    cout << endl << "\t* Program returned!" << endl;
+    cout << endl << "Press any key to exit...";
+
+    getch();
 
     return 0;
 }
