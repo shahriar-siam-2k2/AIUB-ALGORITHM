@@ -49,8 +49,17 @@ int InputWeight() {
 
 void AddEdge(Node* adjList[], int source, int destination, int weight) {
     Node* newNode = new Node(destination, weight);
-    newNode->next = adjList[source];
-    adjList[source] = newNode;
+
+    if(adjList[source] == nullptr) {
+        adjList[source] = newNode;
+    }
+    else {
+        Node* temp = adjList[source];
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
 }
 
 void ShowGraph(Node* adjList[], int vertices, string type) {
@@ -63,7 +72,7 @@ void ShowGraph(Node* adjList[], int vertices, string type) {
         Node* temp = adjList[i];
         while (temp != nullptr) {
             cout << temp->data;
-            if (temp->weight != 0) {
+            if (temp->weight != 1) {
                 cout << "(" << temp->weight << ")";
             }
             cout << " -> ";
@@ -91,7 +100,7 @@ int main() {
         if(op == '1') {
             int vertices = InputVertices();
 
-            Node* adjList[vertices];
+            Node** adjList = new Node* [vertices];
             InitializeAdjList(adjList, vertices);
 
             for(int i=0; i<vertices; i++) {
@@ -102,26 +111,29 @@ int main() {
             }
 
             ShowGraph(adjList, vertices, "Directed");
+            delete[] adjList;
         }
         else if(op == '2') {
             int vertices = InputVertices();
 
-            Node* adjList[vertices];
+            Node** adjList = new Node* [vertices];
             InitializeAdjList(adjList, vertices);
 
             for(int i=0; i<vertices; i++) {
                 cout << endl << "Vertice-" << i+1 << endl;
                 int source = InputSource();
                 int destination = InputDestination();
+                AddEdge(adjList, source, destination, 1);
                 AddEdge(adjList, destination, source, 1);
             }
             
             ShowGraph(adjList, vertices, "Undirected");
+            delete[] adjList;
         }
         else if(op == '3') {
             int vertices = InputVertices();
 
-            Node* adjList[vertices];
+            Node** adjList = new Node* [vertices];
             InitializeAdjList(adjList, vertices);
 
             for(int i=0; i<vertices; i++) {
@@ -133,11 +145,12 @@ int main() {
             }
 
             ShowGraph(adjList, vertices, "Directed Weighted");
+            delete[] adjList;
         }
         else if(op == '4') {
             int vertices = InputVertices();
 
-            Node* adjList[vertices];
+            Node** adjList = new Node* [vertices];
             InitializeAdjList(adjList, vertices);
 
             for(int i=0; i<vertices; i++) {
@@ -145,10 +158,12 @@ int main() {
                 int source = InputSource();
                 int destination = InputDestination();
                 int weight = InputWeight();
+                AddEdge(adjList, source, destination, weight);
                 AddEdge(adjList, destination, source, weight);
             }
 
             ShowGraph(adjList, vertices, "Undirected Weighted");
+            delete[] adjList;
         }
         else if(op == '5') {
             cout << endl << "Exited" << endl;
