@@ -4,8 +4,13 @@
 using namespace std;
 
 void Knapsack_01(int n, int W, int weight[], int price[], string itemNames[]) {
-    int V[n+1][W+1];
-    bool selected[n+1][W+1] = {false};
+
+    int **V = new int *[n+1];
+    bool **selected = new bool *[n+1];
+    for(int i=0; i<n+1; i++) {
+        V[i] = new int [W+1];
+        selected[i] = new bool [W+1]();
+    }
 
     for(int i=0; i<=n; i++) {
         V[i][0] = 0;
@@ -62,6 +67,13 @@ void Knapsack_01(int n, int W, int weight[], int price[], string itemNames[]) {
         }
         cout << endl;
     }
+
+    for(int i=0; i<n+1; i++) {
+        delete[] V[i];
+        delete[] selected[i];
+    }
+    delete[] V;
+    delete[] selected;
 }
 
 int main() {
