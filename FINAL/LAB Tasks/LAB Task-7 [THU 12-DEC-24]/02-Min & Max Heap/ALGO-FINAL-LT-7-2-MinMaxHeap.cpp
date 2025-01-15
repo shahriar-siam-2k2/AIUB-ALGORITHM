@@ -4,7 +4,7 @@
 #include <conio.h>
 using namespace std;
 
-int count = 0;
+int c = 0;
 
 struct node {
     int data;
@@ -24,10 +24,10 @@ node* createNode(int data) {
     newNode->Lchild = nullptr;
     newNode->Rchild = nullptr;
     
-    count++;
+    c++;
 
-    cout << endl << "\t* New Node (node-" << count << ") Created!" << endl;
-    cout << endl << "\t* " << data << " Added to Node-" << count << "!" << endl;
+    cout << endl << "\t* New Node (node-" << c << ") Created!" << endl;
+    cout << endl << "\t* " << data << " Added to Node-" << c << "!" << endl;
 
     return newNode;
 }
