@@ -1,4 +1,4 @@
-// ALGO-FINAL-LT-9-3-Similarity
+// ALGO-FINAL-LT-9-3-SimilarityLCS
 
 #include <iostream>
 using namespace std;
