@@ -9,7 +9,7 @@ int totalNode;
 int adjList[maxNode][maxNode];
 int indegree[maxNode];
 int sorted[maxNode];
-bool visiteed[maxNode];
+bool visited[maxNode];
 
 void SetGraph(int nodes) {
     totalNode = nodes;
@@ -18,7 +18,7 @@ void SetGraph(int nodes) {
             adjList[i][j] = 0;
         }
         indegree[i] = 0;
-        visiteed[i] = false;
+        visited[i] = false;
     }
     cout << endl << "\tGraph Initialized!" << endl;
 }
@@ -38,14 +38,14 @@ bool TopologicalSort() {
 
         cout << endl << "Nodes with in-degree 0: ";
         for (int j = 0; j < totalNode; j++) {
-            if (!visiteed[j] && indegree[j] == 0) {
+            if (!visited[j] && indegree[j] == 0) {
                 cout << j << " ";
             }
         }
         cout << endl;
 
         for(int j=0; j<totalNode; j++) {
-            if(!visiteed[j] && indegree[j] == 0) {
+            if(!visited[j] && indegree[j] == 0) {
                 curr = j;
                 break;
             }
@@ -55,7 +55,7 @@ bool TopologicalSort() {
             return false;
         }
 
-        visiteed[curr] = true;
+        visited[curr] = true;
         sorted[sortCount++] = curr;
 
         for(int j=0; j<totalNode; j++) {
